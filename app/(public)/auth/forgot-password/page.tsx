@@ -1,20 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Link from "next/link";
+import Loader from "@/app/Loader";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader duration={1500} />;
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     try {
       await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent!");
+      setSuccess("Password reset email sent!");
     } catch (err: any) {
-      alert(err.message);
+      if (err.code === "auth/user-not-found") {
+        setError("Email not registered");
+      } else if (err.code === "auth/invalid-email") {
+        setError("Invalid email address");
+      } else {
+        setError("Failed to send password reset email");
+      }
     }
   };
 
@@ -36,6 +56,9 @@ export default function ForgotPasswordPage() {
           required
           className="bg-[#2a2a2a] border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#00f7ff]"
         />
+
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {success && <p className="text-green-400 text-sm">{success}</p>}
 
         <button
           type="submit"

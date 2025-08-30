@@ -3,19 +3,40 @@ import { useAuth } from "@/context/AuthContext";
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaInstagram, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 import TargetCursor from "../../components/TargetCursor";
+import Loader from "../Loader";
 
 const Home = () => {
   const { user, logout } = useAuth();
+  const [loading, setLoading] = useState(true);
+
+  const [showCursor, setShowCursor] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setShowCursor(window.innerWidth >= 1024); // show only on lg and above
+    };
+
+    handleResize(); // initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500); // simulate loading duration
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader duration={1500} />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#253900] via-[#253900] to-[#021d01b4] text-white p-6">
-      <TargetCursor spinDuration={20} hideDefaultCursor={true} />
+      {showCursor && <TargetCursor spinDuration={20} hideDefaultCursor={true} />}
       <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] lg:grid-rows-[auto_auto] gap-6">
         <div className="flex flex-col gap-6 lg:row-span-2">
           {/* Logo */}

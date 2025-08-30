@@ -1,49 +1,73 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
-import { FcGoogle } from "react-icons/fc"; // Google icon
+import { FcGoogle } from "react-icons/fc";
+import Loader from "@/app/Loader";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // Inline error state
+  const [success, setSuccess] = useState(""); // Inline success state
   const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader duration={1500} />;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      setSuccess("Login successful!");
+      setTimeout(() => router.push("/"), 1000); // Redirect after short delay
     } catch (err: any) {
-      alert(err.message);
+      if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+        setError("Invalid email or password");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     }
   };
 
   const handleGoogleLogin = async () => {
+    setError("");
+    setSuccess("");
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push("/");
+      setSuccess("Login successful!");
+      setTimeout(() => router.push("/"), 1000);
     } catch (err: any) {
-      alert(err.message);
+      setError("Failed to login with Google");
     }
   };
 
   const handleForgotPassword = async () => {
-    if (!email) {
-      alert("Please enter your email first");
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent!");
-    } catch (err: any) {
-      alert(err.message);
-    }
-  };
+  setError("");
+  setSuccess("");
+
+
+  try {
+    // await sendPasswordResetEmail(auth, email);
+    // setSuccess("Password reset email sent!");
+    setTimeout(() => router.push("/auth/forgot-password"), 1500); // redirect after 1.5s
+  } catch (err: any) {
+    setError("Failed to send password reset email");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#121212] p-6">
@@ -51,12 +75,10 @@ export default function LoginPage() {
         onSubmit={handleLogin}
         className="bg-[#1e1e1e] rounded-xl p-8 w-full max-w-md flex flex-col gap-4 border border-[#333]"
       >
-        {/* Heading */}
         <h2 className="text-2xl sm:text-3xl text-[#00f7ff] font-semibold text-center">
           Welcome Back!
         </h2>
 
-        {/* Inputs */}
         <input
           type="email"
           placeholder="Email"
@@ -74,7 +96,9 @@ export default function LoginPage() {
           className="bg-[#2a2a2a] border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#00f7ff]"
         />
 
-        {/* Login Button */}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {success && <p className="text-green-400 text-sm">{success}</p>}
+
         <button
           type="submit"
           className="w-full text-lg bg-[#00f7ff] text-black font-semibold rounded-lg py-2 hover:bg-[#00d4ff] transition duration-200"
@@ -82,7 +106,6 @@ export default function LoginPage() {
           Login
         </button>
 
-        {/* Google Sign-In */}
         <button
           type="button"
           onClick={handleGoogleLogin}
@@ -91,7 +114,6 @@ export default function LoginPage() {
           <FcGoogle size={24} /> Sign in with Google
         </button>
 
-        {/* Forgot Password */}
         <button
           type="button"
           onClick={handleForgotPassword}
@@ -100,7 +122,6 @@ export default function LoginPage() {
           Forgot Password?
         </button>
 
-        {/* Signup Link */}
         <p className="text-gray-300 text-center mt-2">
           Don&apos;t have an account?{" "}
           <Link href="/auth/register" className="text-[#ff4c4c] font-semibold hover:underline">
