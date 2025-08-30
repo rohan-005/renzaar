@@ -1,0 +1,148 @@
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+
+import { FaInstagram, FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+
+const Home = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0d0f1a] via-[#121826] to-[#0d0f1a] text-white p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] lg:grid-rows-[auto_auto] gap-6">
+        {/* Left Column: Logo + Profile */}
+        <div className="flex flex-col gap-6 lg:row-span-2">
+          {/* Logo */}
+          <header className="flex justify-center lg:justify-start">
+            <h1 className="text-[4rem] sm:text-[5rem] lg:text-[6rem] font-electric font-extrabold text-[#d84242] leading-none drop-shadow-[0_0_25px_rgba(216,66,66,0.7)] transition duration-500 hover:drop-shadow-[0_0_40px_rgba(216,66,66,1)]">
+              <Link href="/" className="block">
+                RENZAAR
+              </Link>
+            </h1>
+          </header>
+
+          {/* Profile Card */}
+          <div className="font-stromfaze bg-gradient-to-br from-[#16272f] to-[#0e181e] rounded-xl p-6 flex flex-col gap-6 lg:h-[360px] sm:h-[250px] shadow-[0_4px_20px_rgba(0,0,0,0.8)] border border-[#2c3e50]">
+            {/* Welcome Back */}
+            <div className="text-xl sm:text-2xl lg:text-3xl text-[#00f7ff] font-semibold">
+              Welcome Back!
+            </div>
+
+            {/* Avatar + Username */}
+            <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+              <div className="w-14 h-14 rounded-full bg-[#0d1a24] flex items-center justify-center border-4 border-[#00f7ff] shadow-[0_0_10px_#00f7ff]">
+                <Image
+                  src="/vercel.svg"
+                  alt="avatar"
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
+              </div>
+              <span className="text-3xl sm:text-4xl lg:text-5xl text-white break-words">
+                USERNAME
+              </span>
+            </div>
+
+            {/* Navigation */}
+            <nav className="flex lg:flex-col sm:flex-row sm:gap-12 lg:gap-2 text-lg sm:text-xl lg:text-2xl mt-2">
+              <Link
+                href="#"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
+              >
+                <span>📂</span> PROFILE
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
+              >
+                <span>📦</span> MY ASSETS
+              </Link>
+            </nav>
+
+            {/* Logout */}
+            <div className="mt-auto">
+              <button className="w-full flex items-center justify-between px-3 py-2 text-lg sm:text-xl lg:text-2xl text-gray-400 rounded-lg hover:text-[#ff4c4c] hover:bg-[#1a1a1a] hover:drop-shadow-[0_0_8px_#ff4c4c] transition duration-300">
+                <span>LOG OUT</span>
+                <span className="text-xl sm:text-2xl">↩</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Description Box */}
+        <div className="font-stromfaze relative bg-gradient-to-br from-[#11151c] to-[#1c2028] text-white rounded-2xl flex flex-col items-center justify-center h-auto p-6 sm:p-10 border border-[#2c3e50]/70 shadow-lg">
+          {/* Tagline */}
+          <h2 className="text-center text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-6 text-[#f7e989]">
+            Discover. Create. Own.
+          </h2>
+
+          {/* Description */}
+          <p className="text-center text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mb-8 px-2">
+            Welcome to{" "}
+            <span className="text-[#f7e989] font-semibold">Renzaar</span>, your
+            ultimate marketplace for premium 3D game assets. Explore top-quality
+            models, animations, and textures crafted by passionate creators.
+            Empower your imagination and bring your game ideas to life!
+          </p>
+
+          {/* Why Choose Us */}
+          <div className="text-center max-w-4xl w-full">
+            <h3 className="text-xl sm:text-2xl font-semibold text-[#f7e989] mb-4">
+              Why Choose Us?
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-300 text-sm sm:text-lg px-4">
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                <span className="text-green-400 text-xl">✔</span>
+                <span>Curated high-quality assets</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                <span className="text-green-400 text-xl">✔</span>
+                <span>Affordable for all creators</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                <span className="text-green-400 text-xl">✔</span>
+                <span>Instant downloads & easy integration</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                <span className="text-green-400 text-xl">✔</span>
+                <span>Community-driven platform</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Links */}
+          <div className="flex justify-center sm:justify-end gap-6 text-2xl mt-8 w-full">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              className="text-gray-400 hover:text-pink-500 transition duration-300"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              className="text-gray-400 hover:text-white transition duration-300"
+            >
+              <FaXTwitter />
+            </a>
+            <a
+              href="https://github.com"
+              target="_blank"
+              className="text-gray-400 hover:text-gray-200 transition duration-300"
+            >
+              <FaGithub />
+            </a>
+          </div>
+        </div>
+
+        {/* Assets Section */}
+        <div className="bg-gradient-to-br from-[#11151c] to-[#1c2028] rounded-xl flex items-center justify-center text-4xl sm:text-5xl font-bold h-[300px] border border-[#2c3e50] shadow-[0_4px_20px_rgba(0,0,0,0.8)] lg:col-span-2">
+          <span className="text-[#00f7ff]">ASSETS</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
