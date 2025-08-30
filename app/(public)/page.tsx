@@ -1,3 +1,6 @@
+"use client";
+import { useAuth } from "@/context/AuthContext";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -5,16 +8,14 @@ import React from "react";
 import { FaInstagram, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
-import TargetCursor from '../../components/targetcursor';
-
+import TargetCursor from "../../components/TargetCursor";
 
 const Home = () => {
+  const { user, logout } = useAuth();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#253900] via-[#253900] to-[#08CB00] text-white p-6">
-      <TargetCursor 
-        spinDuration={20}
-        hideDefaultCursor={true}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-[#253900] via-[#253900] to-[#021d01b4] text-white p-6">
+      <TargetCursor spinDuration={20} hideDefaultCursor={true} />
       <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] lg:grid-rows-[auto_auto] gap-6">
         <div className="flex flex-col gap-6 lg:row-span-2">
           {/* Logo */}
@@ -28,56 +29,80 @@ const Home = () => {
 
           {/* Profile Card */}
           <div className="font-stromfaze bg-gradient-to-br from-[#16272f] to-[#0e181e] rounded-xl p-6 flex flex-col gap-6 lg:h-[370px] sm:h-[300px] shadow-[0_4px_20px_rgba(0,0,0,0.8)] border border-[#2c3e50]">
-            {/* Welcome Back */}
-            <div className="text-xl sm:text-2xl lg:text-3xl text-[#00f7ff] font-semibold">
-              Welcome Back!
+            {/* Slogan */}
+            <div className="text-lg sm:text-xl lg:text-2xl text-[#00f7ff] font-semibold">
+              {user ? "Welcome Back!" : "Level Up Your Game Assets!"}
             </div>
 
-            {/* Avatar + Username */}
-            <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
-              <div className="w-14 h-14 rounded-full bg-[#0d1a24] flex items-center justify-center border-4 border-[#00f7ff] shadow-[0_0_10px_#00f7ff]">
-                <Image
-                  src="/vercel.svg"
-                  alt="avatar"
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-              </div>
-              <button className="cursor-target">
-              <span className="text-3xl sm:text-4xl lg:text-5xl text-white break-words">
-                USERNAME
-              </span>
-              </button>
-            </div>
+            {user ? (
+              <>
+                {/* Avatar + Username */}
+                <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+                  <div className="w-14 h-14 rounded-full bg-[#0d1a24] flex items-center justify-center border-4 border-[#00f7ff] shadow-[0_0_10px_#00f7ff] cursor-target">
+                    <Image
+                      src={user.photoURL || "/vercel.svg"} // fallback if photoURL is null
+                      alt="avatar"
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <span className="text-3xl sm:text-4xl lg:text-5xl text-white break-words cursor-target">
+                    {user.displayName || "USERNAME"}
+                  </span>
+                </div>
 
-            {/* Navigation */}
-            <nav className="flex lg:flex-col sm:flex-row sm:gap-12 lg:gap-2 text-lg sm:text-xl lg:text-2xl mt-2">
-              <button className="cursor-target">
-              <Link
-                href="#"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
-              >
-                <span>📂</span> PROFILE
-              </Link>
-              </button>
-              <button className="cursor-target">
-              <Link
-                href="#"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
-              >
-                <span>📦</span> MY ASSETS
-              </Link>
-              </button>
-            </nav>
+                {/* Navigation */}
+                <nav className="flex lg:flex-col sm:flex-row sm:gap-12 lg:gap-2 text-lg sm:text-xl lg:text-2xl mt-2">
+                  <Link
+                    href="#"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300 cursor-target"
+                  >
+                    <span>📂</span> PROFILE
+                  </Link>
+                  <Link
+                    href="#"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300 cursor-target"
+                  >
+                    <span>📦</span> MY ASSETS
+                  </Link>
+                </nav>
 
-            {/* Logout */}
-            <div className="mt-auto">
-              <button className="cursor-target w-full flex items-center justify-between px-3 py-2 text-lg sm:text-xl lg:text-2xl text-gray-400 rounded-lg hover:text-[#ff4c4c] hover:bg-[#1a1a1a] hover:drop-shadow-[0_0_8px_#ff4c4c] transition duration-300">
-                <span>LOG OUT</span>
-                <span className="text-xl sm:text-2xl">↩</span>
-              </button>
-            </div>
+                {/* Logout */}
+                <div className="mt-auto">
+                  <button
+                    onClick={logout}
+                    className="cursor-target w-full flex items-center justify-between px-3 py-2 text-lg sm:text-xl lg:text-2xl text-gray-400 rounded-lg hover:text-[#ff4c4c] hover:bg-[#1a1a1a] hover:drop-shadow-[0_0_8px_#ff4c4c] transition duration-300"
+                  >
+                    <span>LOG OUT</span>
+                    <span className="text-xl sm:text-2xl">↩</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Catchy Slogan */}
+                <div className="text-xl sm:text-2xl lg:text-3xl text-white font-bold">
+                  Unlock, Trade, and Level Up Your Game Assets!
+                </div>
+
+                {/* Login / Register Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                  <Link
+                    href="/auth/login"
+                    className="cursor-target w-full sm:w-auto px-6 py-3 bg-[#00f7ff] text-black rounded-lg font-semibold text-lg hover:bg-[#00e0ff] transition"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="cursor-target w-full sm:w-auto px-6 py-3 bg-[#ff4c4c] text-white rounded-lg font-semibold text-lg hover:bg-[#ff1a1a] transition"
+                  >
+                    Register
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -125,31 +150,31 @@ const Home = () => {
           {/* Social Links */}
           <div className="flex justify-center sm:justify-end gap-6 text-3xl mt-8 w-full">
             <button className="cursor-target">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              className="text-gray-400 hover:text-pink-500 transition duration-300"
-            >
-              <FaInstagram />
-            </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                className="text-gray-400 hover:text-pink-500 transition duration-300"
+              >
+                <FaInstagram />
+              </a>
             </button>
             <button className="cursor-target">
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              className="text-gray-400 hover:text-white transition duration-300"
-            >
-              <FaXTwitter />
-            </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                className="text-gray-400 hover:text-white transition duration-300"
+              >
+                <FaXTwitter />
+              </a>
             </button>
             <button className="cursor-target">
-            <a
-              href="https://github.com"
-              target="_blank"
-              className="text-gray-400 hover:text-gray-200 transition duration-300"
-            >
-              <FaGithub />
-            </a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                className="text-gray-400 hover:text-gray-200 transition duration-300"
+              >
+                <FaGithub />
+              </a>
             </button>
           </div>
         </div>
