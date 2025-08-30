@@ -5,11 +5,17 @@ import React from "react";
 import { FaInstagram, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
+import TargetCursor from '../../components/targetcursor';
+
+
 const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0d0f1a] via-[#121826] to-[#0d0f1a] text-white p-6">
+      <TargetCursor 
+        spinDuration={20}
+        hideDefaultCursor={true}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] lg:grid-rows-[auto_auto] gap-6">
-        {/* Left Column: Logo + Profile */}
         <div className="flex flex-col gap-6 lg:row-span-2">
           {/* Logo */}
           <header className="flex justify-center lg:justify-start">
@@ -21,7 +27,7 @@ const Home = () => {
           </header>
 
           {/* Profile Card */}
-          <div className="font-stromfaze bg-gradient-to-br from-[#16272f] to-[#0e181e] rounded-xl p-6 flex flex-col gap-6 lg:h-[360px] sm:h-[250px] shadow-[0_4px_20px_rgba(0,0,0,0.8)] border border-[#2c3e50]">
+          <div className="font-stromfaze bg-gradient-to-br from-[#16272f] to-[#0e181e] rounded-xl p-6 flex flex-col gap-6 lg:h-[370px] sm:h-[300px] shadow-[0_4px_20px_rgba(0,0,0,0.8)] border border-[#2c3e50]">
             {/* Welcome Back */}
             <div className="text-xl sm:text-2xl lg:text-3xl text-[#00f7ff] font-semibold">
               Welcome Back!
@@ -38,30 +44,36 @@ const Home = () => {
                   className="rounded-full"
                 />
               </div>
+              <button className="cursor-target">
               <span className="text-3xl sm:text-4xl lg:text-5xl text-white break-words">
                 USERNAME
               </span>
+              </button>
             </div>
 
             {/* Navigation */}
             <nav className="flex lg:flex-col sm:flex-row sm:gap-12 lg:gap-2 text-lg sm:text-xl lg:text-2xl mt-2">
+              <button className="cursor-target">
               <Link
                 href="#"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
               >
                 <span>📂</span> PROFILE
               </Link>
+              </button>
+              <button className="cursor-target">
               <Link
                 href="#"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#0f1c26] hover:text-[#00f7ff] hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
               >
                 <span>📦</span> MY ASSETS
               </Link>
+              </button>
             </nav>
 
             {/* Logout */}
             <div className="mt-auto">
-              <button className="w-full flex items-center justify-between px-3 py-2 text-lg sm:text-xl lg:text-2xl text-gray-400 rounded-lg hover:text-[#ff4c4c] hover:bg-[#1a1a1a] hover:drop-shadow-[0_0_8px_#ff4c4c] transition duration-300">
+              <button className="cursor-target w-full flex items-center justify-between px-3 py-2 text-lg sm:text-xl lg:text-2xl text-gray-400 rounded-lg hover:text-[#ff4c4c] hover:bg-[#1a1a1a] hover:drop-shadow-[0_0_8px_#ff4c4c] transition duration-300">
                 <span>LOG OUT</span>
                 <span className="text-xl sm:text-2xl">↩</span>
               </button>
@@ -111,7 +123,8 @@ const Home = () => {
           </div>
 
           {/* Social Links */}
-          <div className="flex justify-center sm:justify-end gap-6 text-2xl mt-8 w-full">
+          <div className="flex justify-center sm:justify-end gap-6 text-3xl mt-8 w-full">
+            <button className="cursor-target">
             <a
               href="https://instagram.com"
               target="_blank"
@@ -119,6 +132,8 @@ const Home = () => {
             >
               <FaInstagram />
             </a>
+            </button>
+            <button className="cursor-target">
             <a
               href="https://twitter.com"
               target="_blank"
@@ -126,6 +141,8 @@ const Home = () => {
             >
               <FaXTwitter />
             </a>
+            </button>
+            <button className="cursor-target">
             <a
               href="https://github.com"
               target="_blank"
@@ -133,6 +150,7 @@ const Home = () => {
             >
               <FaGithub />
             </a>
+            </button>
           </div>
         </div>
 
