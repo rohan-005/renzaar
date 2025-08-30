@@ -10,7 +10,7 @@ import TargetCursor from '../../components/targetcursor';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0d0f1a] via-[#121826] to-[#0d0f1a] text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#253900] via-[#253900] to-[#08CB00] text-white p-6">
       <TargetCursor 
         spinDuration={20}
         hideDefaultCursor={true}
