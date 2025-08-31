@@ -78,7 +78,7 @@ const Home = () => {
                 {/* Navigation */}
                 <nav className="flex lg:flex-col sm:flex-row sm:gap-20 lg:gap-2 text-lg sm:text-xl lg:text-2xl mt-2">
                   <Link
-                    href="#"
+                    href="/Profile"
                     className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-target ml-2
                                bg-white/10 backdrop-blur-sm hover:bg-[#0f1c26]/50 hover:text-[#00f7ff] 
                                hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
@@ -86,7 +86,7 @@ const Home = () => {
                     <span>📂</span> PROFILE
                   </Link>
                   <Link
-                    href="#"
+                    href="/my-assets"
                     className="flex items-center gap-3 px-3 py-2 rounded-lg  cursor-target ml-2
                                bg-white/10 backdrop-blur-sm hover:bg-[#0f1c26]/50 hover:text-[#00f7ff] 
                                hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
