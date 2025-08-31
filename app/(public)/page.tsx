@@ -35,7 +35,7 @@ const Home = () => {
   if (loading) return <Loader duration={1500} />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#253900] via-[#253900] to-[#021d01b4] text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#c1c4bb] via-[#7d866c] to-[#618260b4] text-white p-6">
       {showCursor && (
         <TargetCursor spinDuration={20} hideDefaultCursor={true} />
       )}

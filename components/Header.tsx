@@ -49,12 +49,12 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6 relative font-sans">
+    <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-6 relative font-sans ">
       {showCursor && <TargetCursor spinDuration={20} hideDefaultCursor />}
 
       {/* Logo + Hamburger (mobile inline) */}
       <div className="flex items-center justify-between lg:justify-start px-4 sm:px-6 py-4">
-        <h1 className="text-[2rem] sm:text-[3rem] lg:text-[5rem] font-electric font-extrabold text-[#d84242] leading-none tracking-wide">
+        <h1 className="mt-4 text-[2rem] sm:text-[3rem] lg:text-[5rem] font-electric font-extrabold text-[#d84242] leading-none tracking-wide">
           <Link href="/" className="block">
             RENZAAR
           </Link>
