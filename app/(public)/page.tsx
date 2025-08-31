@@ -86,7 +86,7 @@ const Home = () => {
                     <span>📂</span> PROFILE
                   </Link>
                   <Link
-                    href="/my-assets"
+                    href="/assets"
                     className="flex items-center gap-3 px-3 py-2 rounded-lg  cursor-target ml-2
                                bg-white/10 backdrop-blur-sm hover:bg-[#0f1c26]/50 hover:text-[#00f7ff] 
                                hover:drop-shadow-[0_0_10px_#00f7ff] transition duration-300"
