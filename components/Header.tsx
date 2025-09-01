@@ -124,13 +124,13 @@ const Header = () => {
                   {/* Navigation */}
                   <nav className="flex flex-col gap-3 text-lg font-semibold">
                     <Link
-                      href="/profile"
+                      href="/Profile"
                       className="cursor-target px-3 py-2 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-[#0f1c26]/50 hover:text-[#00f7ff] hover:shadow-[0_0_10px_#00f7ff] transition duration-300"
                     >
                       📂 Profile
                     </Link>
                     <Link
-                      href="/my-assets"
+                      href="Profile/myassets"
                       className="cursor-target px-3 py-2 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-[#0f1c26]/50 hover:text-[#00f7ff] hover:shadow-[0_0_10px_#00f7ff] transition duration-300"
                     >
                       📦 My Assets

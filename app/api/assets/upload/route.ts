@@ -24,47 +24,50 @@ export async function POST(req: Request) {
     const uploadsDir = path.join(process.cwd(), "public/uploads");
     await mkdir(uploadsDir, { recursive: true });
 
-    // Save thumbnail
+    // ✅ Save thumbnail
     const thumbPath = path.join(uploadsDir, thumbnailFile.name);
     await writeFile(thumbPath, Buffer.from(await thumbnailFile.arrayBuffer()));
     const thumbnailUrl = `/uploads/${thumbnailFile.name}`;
 
-    // Save original asset
+    // ✅ Save original asset (ZIP or model file)
     const assetPath = path.join(uploadsDir, assetFile.name);
     await writeFile(assetPath, Buffer.from(await assetFile.arrayBuffer()));
 
-    let modelUrl: string;
+    let modelUrl: string | null = null;
     let zipUrl: string;
 
     if (assetFile.name.endsWith(".zip")) {
-      // Extract ZIP
+      // ✅ Extract ZIP
       const zip = new AdmZip(assetPath);
       const extractDir = path.join(uploadsDir, name.replace(/\s+/g, "_"));
       await mkdir(extractDir, { recursive: true });
       zip.extractAllTo(extractDir, true);
 
-      // Find first .glb or .gltf file
+      // ✅ Supported model extensions
+      const supportedExtensions = [".glb", ".gltf", ".fbx", ".obj"];
+
+      // ✅ Find first supported model file inside ZIP
       const extractedFiles = zip.getEntries();
       const modelFile = extractedFiles.find(f =>
-        f.entryName.endsWith(".glb") || f.entryName.endsWith(".gltf")
+        supportedExtensions.some(ext => f.entryName.toLowerCase().endsWith(ext))
       );
 
       if (!modelFile) {
         return NextResponse.json({
           success: false,
-          error: "No .glb or .gltf file found inside ZIP",
+          error: "No supported model file (.glb, .gltf, .fbx, .obj) found inside ZIP",
         });
       }
 
       modelUrl = `/uploads/${name.replace(/\s+/g, "_")}/${modelFile.entryName}`;
       zipUrl = `/uploads/${assetFile.name}`; // ZIP for download
     } else {
-      // Direct GLB/FBX/OBJ upload
+      // ✅ Direct upload of .glb, .gltf, .fbx, .obj
       modelUrl = `/uploads/${assetFile.name}`;
       zipUrl = modelUrl;
     }
 
-    // Save metadata to MongoDB
+    // ✅ Save metadata to MongoDB
     const client = await clientPromise;
     const db = client.db("game_assets");
     const collection = db.collection("assets");

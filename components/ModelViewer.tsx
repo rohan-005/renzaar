@@ -22,6 +22,37 @@ const ModelViewer: FC<ModelViewerProps> = ({
   height = 400,
   autoRotate = false,
 }) => {
+  if (!url) {
+    return <div>Loading model...</div>;
+  }
+
+  // ✅ Get file extension safely
+  const ext = url.split(".").pop()?.toLowerCase();
+
+  // ✅ Only allow .glb and .gltf
+  if (ext !== "glb" && ext !== "gltf") {
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#1a1a1a",
+          color: "#fff",
+          borderRadius: "8px",
+          fontSize: "14px",
+          textAlign: "center",
+          padding: "10px",
+        }}
+      >
+        No 3D preview available.  
+        Please upload a <strong>.glb</strong> file.
+      </div>
+    );
+  }
+
   return (
     <div style={{ width, height }}>
       <Canvas camera={{ position: [0, 1, 3] }}>
