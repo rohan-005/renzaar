@@ -138,7 +138,7 @@ const AssetCard: React.FC<Props> = ({ asset }) => {
       </div>
 
       {/* Asset Name */}
-      <h3 className="text-black  font-semibold text-3xl">{asset.name}</h3>
+      <h3 className="text-white  font-semibold text-3xl">{asset.name}</h3>
 
       {/* Modal */}
       {showPreview && (

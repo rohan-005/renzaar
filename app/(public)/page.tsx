@@ -10,12 +10,31 @@ import { FaXTwitter } from "react-icons/fa6";
 
 import TargetCursor from "../../components/TargetCursor";
 import Loader from "../Loader";
+import { Asset } from "@/types";
+import AssetList from "@/components/AssetList";
 
 const Home = () => {
   const { user, logout } = useAuth();
   const [loading, setLoading] = useState(true);
-
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [showCursor, setShowCursor] = useState(false);
+
+  useEffect(() => {
+    async function fetchAssets() {
+      if (!user) return;
+
+      const res = await fetch("/api/assets/list");
+      const data = await res.json();
+
+      // Exclude assets uploaded by current user
+      const otherAssets = data.assets.filter(
+        (a: Asset) => a.ownerId !== user.uid
+      );
+      setAssets(otherAssets);
+    }
+
+    fetchAssets();
+  }, [user]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,6 +59,7 @@ const Home = () => {
         <TargetCursor spinDuration={20} hideDefaultCursor={true} />
       )}
       <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] lg:grid-rows-[auto_auto] gap-6">
+        {/* LEFT PANEL */}
         <div className="flex flex-col gap-6 lg:row-span-2">
           {/* Logo */}
           <header className="flex justify-center lg:justify-start">
@@ -139,7 +159,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Description Box */}
+        {/* DESCRIPTION BOX */}
         <div className="font-stromfaze relative bg-gradient-to-br from-[#11151c] to-[#1c2028] text-white rounded-2xl flex flex-col items-center justify-center h-auto p-6 sm:p-10 border border-[#2c3e50]/70 shadow-lg">
           {/* Tagline */}
           <h2 className="text-center text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-6 text-[#f7e989]">
@@ -206,9 +226,63 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Assets Section */}
-        <div className="bg-gradient-to-br from-[#11151c] to-[#1c2028] rounded-xl flex items-center justify-center text-4xl sm:text-5xl font-bold h-[300px] border border-[#2c3e50] shadow-[0_4px_20px_rgba(0,0,0,0.8)] lg:col-span-2">
-          <span className="text-[#00f7ff]">ASSETS</span>
+        {/* ASSETS SECTION */}
+        {/* ASSETS SECTION */}
+        <div className="font-stromfaze bg-gradient-to-br from-[#11151c] to-[#1c2028] rounded-xl p-8 text-white border border-[#2c3e50] shadow-[0_4px_20px_rgba(0,0,0,0.8)] lg:col-span-2">
+          <h2 className="text-center text-3xl sm:text-4xl font-bold mb-6 text-[#00f7ff]">
+            Marketplace
+          </h2>
+
+          {/* Asset Grid */}
+          {assets.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center justify-center lg:ml-20">
+              {assets.slice(0, 6).map((asset) => (
+                <div key={asset._id}>
+                  {user ? (
+                    // If logged in → full preview with AssetCard
+                    <AssetList assets={[asset]} />
+                  ) : (
+                    // If NOT logged in → show thumbnail only
+                    <div className="bg-[#1b222b] rounded-lg p-4 shadow-lg flex flex-col items-center">
+                      <Image
+                        src={asset.thumbnailUrl || "/dummy/file.svg"}
+                        alt={asset.name}
+                        width={250}
+                        height={250}
+                        className="rounded-lg mb-4"
+                      />
+                      <h3 className="text-xl font-semibold text-center">
+                        {asset.name}
+                      </h3>
+                      <p className="text-gray-400 text-sm mt-2 text-center">
+                        Login to preview the 3D model
+                      </p>
+                      <Link
+                        href="/auth/login"
+                        className="mt-4 px-6 py-2 bg-[#00f7ff] text-black rounded-lg font-semibold hover:bg-[#00d8e6] transition"
+                      >
+                        Login
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-400 text-lg">
+              No assets available right now.
+            </p>
+          )}
+
+          {/* Go to Marketplace Button */}
+          <div className="flex justify-center mt-8">
+            <Link
+              href="/marketplace"
+              className="bg-[#00f7ff] text-black px-8 py-3 rounded-lg text-lg font-semibold hover:bg-[#00d8e6] transition"
+            >
+              Go to Marketplace →
+            </Link>
+          </div>
         </div>
       </div>
     </div>
