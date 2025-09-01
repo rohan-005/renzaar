@@ -1,7 +1,10 @@
-export type Asset = {
-  id: number;
+export interface Asset {
+  _id?: string;
   name: string;
-  thumbnail: string;
+  description?: string;
+  thumbnailUrl: string;
   modelUrl: string;
-  zipFile?: File;
-};
+  zipUrl: string;
+  ownerId: string;
+  createdAt: Date;
+}
