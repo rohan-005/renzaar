@@ -91,7 +91,9 @@ const Home = () => {
                     />
                   </div>
                   <span className="text-3xl sm:text-4xl lg:text-5xl text-white break-words cursor-target">
-                    {user.displayName || "USERNAME"}
+                    {user.displayName
+                      ? user.displayName.split(" ")[0]
+                      : "USERNAME"}
                   </span>
                 </div>
 

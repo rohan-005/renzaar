@@ -6,5 +6,7 @@ export interface Asset {
   modelUrl: string;
   zipUrl: string;
   ownerId: string;
+  isFree: boolean;
+  price?: number; // Only if Paid
   createdAt: Date;
 }

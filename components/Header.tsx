@@ -116,8 +116,10 @@ const Header = () => {
                         className="rounded-full cursor-target"
                       />
                     </div>
-                    <span className="cursor-target text-xl text-white font-semibold">
-                      {user.displayName || "USERNAME"}
+                    <span className="text-3xl sm:text-4xl lg:text-5xl text-white break-words cursor-target">
+                      {user.displayName
+                        ? user.displayName.split(" ")[0]
+                        : "USERNAME"}
                     </span>
                   </div>
 

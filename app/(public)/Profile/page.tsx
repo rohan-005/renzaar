@@ -24,6 +24,8 @@ const Profile = () => {
   const [description, setDescription] = useState("");
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [zipFile, setZipFile] = useState<File | null>(null);
+  const [isFree, setIsFree] = useState(true);
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     const handleResize = () => {
@@ -130,6 +132,10 @@ const Profile = () => {
                 setAssetName={setAssetName}
                 description={description}
                 setDescription={setDescription}
+                isFree={isFree}
+                setIsFree={setIsFree}
+                price={price}
+                setPrice={setPrice}
                 handleThumbnail={(e) =>
                   setThumbnailFile(e.target.files?.[0] || null)
                 }

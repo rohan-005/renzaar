@@ -10,7 +10,11 @@ interface AssetUploadProps {
   setDescription: (desc: string) => void;
   handleThumbnail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleZip: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleAddAsset: () => Promise<void>; // Make it async for upload
+  handleAddAsset: () => Promise<void>; // Async upload function
+  isFree: boolean;
+  setIsFree: (val: boolean) => void;
+  price: string;
+  setPrice: (val: string) => void;
 }
 
 const AssetUpload: FC<AssetUploadProps> = ({
@@ -21,12 +25,21 @@ const AssetUpload: FC<AssetUploadProps> = ({
   handleThumbnail,
   handleZip,
   handleAddAsset,
+  isFree,
+  setIsFree,
+  price,
+  setPrice,
 }) => {
   const [isUploading, setIsUploading] = useState(false);
 
   const startUpload = async () => {
     if (!assetName || !description) {
       toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!isFree && (!price || parseFloat(price) <= 0)) {
+      toast.error("Please enter a valid price for paid assets");
       return;
     }
 
@@ -39,6 +52,8 @@ const AssetUpload: FC<AssetUploadProps> = ({
       toast.success("Asset uploaded successfully!");
       setAssetName("");
       setDescription("");
+      setIsFree(true);
+      setPrice("");
     } catch (error) {
       toast.dismiss();
       toast.error("Failed to upload asset");
@@ -74,6 +89,44 @@ const AssetUpload: FC<AssetUploadProps> = ({
           rows={3}
         />
       </div>
+
+      {/* Free or Paid */}
+      <div className="mb-4 flex items-center gap-4">
+        <label className="block text-sm font-semibold">Price Type:</label>
+        <button
+          type="button"
+          onClick={() => setIsFree(true)}
+          className={`px-4 py-2 rounded-lg ${
+            isFree ? "bg-green-600 text-white" : "bg-gray-700 text-gray-300"
+          }`}
+        >
+          Free
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsFree(false)}
+          className={`px-4 py-2 rounded-lg ${
+            !isFree ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
+          }`}
+        >
+          Paid
+        </button>
+      </div>
+
+      {/* Price Field (Visible if Paid) */}
+      {!isFree && (
+        <div className="mb-4">
+          <label className="block text-sm font-semibold mb-1">Price (USD)</label>
+          <input
+            type="number"
+            placeholder="Enter price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            min="0"
+          />
+        </div>
+      )}
 
       {/* Thumbnail Upload */}
       <div className="mb-4">

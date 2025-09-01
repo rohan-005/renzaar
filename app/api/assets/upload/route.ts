@@ -17,6 +17,8 @@ export async function POST(req: Request) {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
     const ownerId = formData.get("ownerId") as string;
+    const isFree = formData.get("isFree") === "true";
+    const price = isFree ? 0 : parseFloat(formData.get("price") as string || "0");
 
     const thumbnailFile = formData.get("thumbnail") as File;
     const assetFile = formData.get("asset") as File;
@@ -37,16 +39,12 @@ export async function POST(req: Request) {
     let zipUrl: string;
 
     if (assetFile.name.endsWith(".zip")) {
-      // ✅ Extract ZIP
       const zip = new AdmZip(assetPath);
       const extractDir = path.join(uploadsDir, name.replace(/\s+/g, "_"));
       await mkdir(extractDir, { recursive: true });
       zip.extractAllTo(extractDir, true);
 
-      // ✅ Supported model extensions
       const supportedExtensions = [".glb", ".gltf", ".fbx", ".obj"];
-
-      // ✅ Find first supported model file inside ZIP
       const extractedFiles = zip.getEntries();
       const modelFile = extractedFiles.find(f =>
         supportedExtensions.some(ext => f.entryName.toLowerCase().endsWith(ext))
@@ -60,14 +58,12 @@ export async function POST(req: Request) {
       }
 
       modelUrl = `/uploads/${name.replace(/\s+/g, "_")}/${modelFile.entryName}`;
-      zipUrl = `/uploads/${assetFile.name}`; // ZIP for download
+      zipUrl = `/uploads/${assetFile.name}`;
     } else {
-      // ✅ Direct upload of .glb, .gltf, .fbx, .obj
       modelUrl = `/uploads/${assetFile.name}`;
       zipUrl = modelUrl;
     }
 
-    // ✅ Save metadata to MongoDB
     const client = await clientPromise;
     const db = client.db("game_assets");
     const collection = db.collection("assets");
@@ -79,6 +75,8 @@ export async function POST(req: Request) {
       modelUrl,
       zipUrl,
       ownerId,
+      isFree,
+      price,
       createdAt: new Date(),
     });
 
